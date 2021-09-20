@@ -30,9 +30,7 @@ private:
 
     // Helper functions
     template<typename ...Whatever>
-    void noop(Whatever...) {
-        
-    }
+    void noop(Whatever...) {}
 
     template<std::size_t ...I>
     void plus_plus(std::index_sequence<I...>) {
@@ -54,8 +52,8 @@ private:
         noop((std::get<I>(input_itrs) -= d)...);
     }
 
-    template<typename Function, typename Tuple, std::size_t ...I>
-    reference apply(Function f, std::index_sequence<I...>) {
+    template<std::size_t ...I>
+    reference apply(std::index_sequence<I...>) const {
         return conversion_op(*std::get<I>(input_itrs)...);
     }
 
