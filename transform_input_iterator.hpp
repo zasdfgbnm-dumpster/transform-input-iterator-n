@@ -22,15 +22,15 @@ public:
 
     typedef std::random_access_iterator_tag     iterator_category;      ///< The iterator category
 
-private:
 
+private:
     ConversionOp    conversion_op;
     std::tuple<InputIteratorTs...>  input_itrs;
     static constexpr auto tuple_size = std::tuple_size<decltype(input_itrs)>::value;
 
     // Helper functions
     template<typename ...Whatever>
-    void noop(Whatever...) {}
+    static void noop(Whatever...) {}
 
     template<std::size_t ...I>
     void plus_plus(std::index_sequence<I...>) {
@@ -79,7 +79,7 @@ public:
     /// Prefix increment
     self_type operator++()
     {
-        plus_plus(input_itrs, std::make_index_sequence<tuple_size>());
+        plus_plus(std::make_index_sequence<tuple_size>());
         return *this;
     }
 
@@ -94,7 +94,7 @@ public:
     /// Prefix decrement
     self_type operator--()
     {
-        minus_minus(input_itrs, std::make_index_sequence<tuple_size>());
+        minus_minus(std::make_index_sequence<tuple_size>());
         return *this;
     }
 
@@ -151,11 +151,11 @@ public:
         return *(*this + n);
     }
 
-    /// Structure dereference
-    pointer operator->()
-    {
-        return &apply(std::make_index_sequence<tuple_size>());
-    }
+    // /// Structure dereference
+    // pointer operator->()
+    // {
+    //     return &apply(std::make_index_sequence<tuple_size>());
+    // }
 
     /// Equal to
     bool operator==(const self_type& rhs)
